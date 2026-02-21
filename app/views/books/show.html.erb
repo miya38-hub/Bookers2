@@ -1,2 +1,62 @@
-<h1>Books#show</h1>
-<p>Find me in app/views/books/show.html.erb</p>
+<div class="container px-5 px-sm-0">
+  <div class="row">
+
+    <%= render "layouts/sidebar", user: @user, book: @book_new %>
+
+    <!-- ===== 右：Book detail ===== -->
+    <div class="col-md-8 offset-md-1">
+      <h2>Book detail</h2>
+
+      <table class="table">
+        <tbody>
+          <tr>
+            <!-- 画像 + 投稿者名 -->
+            <td class="align-middle" style="width: 120px;">
+              <%= link_to user_path(@user) do %>
+                <% if @user.profile_image&.attached? %>
+                  <%= image_tag @user.profile_image,
+                                style: "width:100px;height:100px;object-fit:cover;" %>
+                <% else %>
+                  <%= image_tag "no_image.jpg",
+                                style: "width:100px;height:100px;" %>
+                <% end %>
+              <% end %>
+
+              <div class="mt-2">
+                <%= link_to @user.name, user_path(@user) %>
+              </div>
+            </td>
+
+            <!-- Title -->
+            <td class="align-middle">
+              <%= @book.title %>
+            </td>
+
+            <!-- Opinion -->
+            <td class="align-middle">
+              <%= @book.body %>
+            </td>
+
+            <!-- Edit（本人だけ） -->
+            <td class="align-middle">
+              <% if @book.user_id == current_user.id %>
+                <%= link_to "Edit", edit_book_path(@book), class: "btn btn-success btn-sm" %>
+              <% end %>
+            </td>
+
+            <!-- Destroy（本人だけ） -->
+            <td class="align-middle">
+              <% if @book.user_id == current_user.id %>
+                <%= link_to "Destroy",
+                            book_path(@book),
+                            data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" },
+                            class: "btn btn-danger btn-sm" %>
+              <% end %>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
