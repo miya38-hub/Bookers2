@@ -39,8 +39,10 @@ end
 
   def show
     @book = Book.find(params[:id])
+    @book_comment = BookComment.new
     @user = @book.user
     @book_new = Book.new
+    @book_comments = @book.book_comments.includes(:user).order(created_at: :desc)
   end
 
   private
