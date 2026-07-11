@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   root to: "homes#top"
   get "home/about", to: "homes#about", as: :about
   get "search", to: "searches#search"
+  post "guest_sign_in", to: "guest_sessions#create", as: :guest_sign_in
   resources :users, only: [ :new, :create, :index, :show, :edit, :update ], path_names: { new: "sign_up" } do
     member do
       get :following
@@ -35,4 +36,6 @@ Rails.application.routes.draw do
       post :send_mail
     end
   end
+
+  
 end

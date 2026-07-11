@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :is_matching_login_user, only: [ :edit, :update ]
+  before_action :ensure_guest_user, only: [:edit]
   allow_unauthenticated_access only: [ :new, :create ]
 
   def edit
@@ -131,6 +132,13 @@ class UsersController < ApplicationController
     # URLのidが自分じゃなければ自分の詳細へ
     if params[:id].to_i != current_user.id
       redirect_to user_path(current_user), status: :see_other
+    end
+  end
+
+  def ensure_guest_user
+    @user = User.find(params[:id])
+    if @user.guest_user?
+      redirect_to user_path(current_user) , notice: "ゲストユーザーはプロフィール編集画面へ遷移できません。"
     end
   end
 end
